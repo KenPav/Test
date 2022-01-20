@@ -20,60 +20,90 @@ var Testing = function(processingInstance) {
          var Lat1 = 0;
          var Long1 = 0;        
          var Lat2 = 0;
-         var Long2 = 0;        
+         var Long2 = 0;
+         var Dist1_2=0;        
 
         var getLocation = function() {
             if (navigator.geolocation) {
-//                navigator.geolocation.getCurrentPosition(showPosition);
-                Lat = position.coords.latitude;
-                Long = position.coords.longitude
+                console.log('geolocation supported');
+                navigator.geolocation.getCurrentPosition(savePosition);
             } else { 
                 console.log("Geolocation is not supported by this browser.");
             }
         }
-
-/*        var showPosition = function(position) {
-  
-            console.log("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+        function savePosition(position) {
+            console.log("Made it to savePosition");
+            Lat = position.coords.latitude;
+            Long = position.coords.longitude;           
         }
-*/
-        var Count=0;
-        draw = function() {
 
-            background(BackColor);
-            fill(BoxColor);
-            
-            rect(50,300,300,100);
-            rect(450,300,300,100);
 
-            textSize(50);
-            textAlign(CENTER);
-            fill(FirstColor);
-
-            text(200,380,"Get 1st Point");
-            text(600,380,"Get 2nd Point");
-            text(200,480,"Lat  =",Lat1);
-            text(200,580,"Long =",Long1);
-            text(200,480,"Lat  =",Lat2);
-            text(200,580,"Long =",Long2);
-
+        function distance(Lat1, Lon1, Lat2, Lon2) {
+            if ((Lat1 == Lat2) && (Lon1 == Lon2)) {
+                return 0;
+            }
+            else {
+                var radlat1 = Math.PI * Lat1/180;
+                var radlat2 = Math.PI * Lat2/180;
+                var theta = Lon1-Lon2;
+                var radtheta = Math.PI * theta/180;
+                var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                if (dist > 1) {
+                    dist = 1;
+                }
+                dist = Math.acos(dist);
+                dist = dist * 180/Math.PI;
+                dist = dist * 60 * 1.1515 * 5280;
+                return dist;
+            }
         }
 
 
         mouseClicked = function() {
 
-            if(mouseX>=50 && mouseX<=350 && mouseY>=300 && mouseY<=400) {
+            if(mouseX>=50 && mouseX<=350 && mouseY>=200 && mouseY<=300) {
                getLocation()
                Lat1=Lat
                Long1=Long
+               Dist1_2=distance();
             }            
             getLocation();
-            if(mouseX>=450 && mouseX<=750 && mouseY>=300 && mouseY<=400) {
+            if(mouseX>=450 && mouseX<=750 && mouseY>=200 && mouseY<=300) {
                getLocation()
                Lat2=Lat
                Long2=Long
+               Dist1_2=distance();
             }            
-        };
+        }
+
+
+        var Count=0;
+        draw = function() {
+        background(BackColor);
+
+
+            fill(BoxColor);
+            
+            rect(50,200,300,100);
+            rect(450,200,300,100);
+
+            textSize(40);
+            textAlign(CENTER);
+            fill(FirstColor);
+
+
+            text("Get 1st Point",200,280);
+            text("Get 2nd Point",600,280);
+            text("Lat  ="+Lat1.toFixed(3),200,380);
+            text("Long ="+Long1.toFixed(3),200,480);
+            text("Lat  ="+Lat2.toFixed(3),600,380);
+            text("Long ="+Long2.toFixed(3),600,480);
+            console.log(Dist1_2,Lat.toFixed(3),Lat1.toFixed(3),Lat2.toFixed(3),Long.toFixed(3),Long1.toFixed(3),Long2.toFixed(3));
+
+        }
+
+
+
 
 }
 };
