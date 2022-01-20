@@ -1,0 +1,84 @@
+var Testing = function(processingInstance) {
+    with (processingInstance) {
+        var canvasSize = 800;
+        size(canvasSize,canvasSize); 
+        frameRate(30);
+        
+        // ProgramCodeGoesHere
+
+         var FirstColor = color(0, 0, 0);
+         var SecondColor = color(135,10,10);
+         var ThirdColor = color(70,50,168);
+         var BoxColor = color(255,255,255);
+         var SelectBoxColor = color(0,255,200);
+         var BackColor = color(180,200,240);
+         stroke(FirstColor);
+         strokeWeight(2);
+
+         var Lat = 0;
+         var Long = 0;
+         var Lat1 = 0;
+         var Long1 = 0;        
+         var Lat2 = 0;
+         var Long2 = 0;        
+
+        var getLocation = function() {
+            if (navigator.geolocation) {
+//                navigator.geolocation.getCurrentPosition(showPosition);
+                Lat = position.coords.latitude;
+                Long = position.coords.longitude
+            } else { 
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+
+/*        var showPosition = function(position) {
+  
+            console.log("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+        }
+*/
+        var Count=0;
+        draw = function() {
+
+            background(BackColor);
+            fill(BoxColor);
+            
+            rect(50,300,300,100);
+            rect(450,300,300,100);
+
+            textSize(50);
+            textAlign(CENTER);
+            fill(FirstColor);
+
+            text(200,380,"Get 1st Point");
+            text(600,380,"Get 2nd Point");
+            text(200,480,"Lat  =",Lat1);
+            text(200,580,"Long =",Long1);
+            text(200,480,"Lat  =",Lat2);
+            text(200,580,"Long =",Long2);
+
+        }
+
+
+        mouseClicked = function() {
+
+            if(mouseX>=50 && mouseX<=350 && mouseY>=300 && mouseY<=400) {
+               getLocation()
+               Lat1=Lat
+               Long1=Long
+            }            
+            getLocation();
+            if(mouseX>=450 && mouseX<=750 && mouseY>=300 && mouseY<=400) {
+               getLocation()
+               Lat2=Lat
+               Long2=Long
+            }            
+        };
+
+}
+};
+
+    // Get the canvas that Processing-js will use
+    var canvas = document.getElementById("mycanvas"); 
+    // Pass the function sketchProc (defined in myCode.js) to Processing's constructor.
+    var processingInstance = new Processing(canvas, Testing); 
