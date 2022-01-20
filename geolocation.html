@@ -21,6 +21,7 @@ var Testing = function(processingInstance) {
          var Long1 = 0;        
          var Lat2 = 0;
          var Long2 = 0;
+         var dist=0;
          var Dist1_2=0;        
 
         var getLocation = function() {
@@ -38,16 +39,18 @@ var Testing = function(processingInstance) {
         }
 
 
-        function distance(Lat1, Lon1, Lat2, Lon2) {
-            if ((Lat1 == Lat2) && (Lon1 == Lon2)) {
+//        function distance(Lat1, Long1, Lat2, Long2) {
+        function distance() {
+            console.log("Made it to distance",Lat1,Long1,Lat2,Long2);
+            if ((Lat1 == Lat2) && (Long1 == Long2)) {
                 return 0;
             }
             else {
                 var radlat1 = Math.PI * Lat1/180;
                 var radlat2 = Math.PI * Lat2/180;
-                var theta = Lon1-Lon2;
+                var theta = Long1-Long2;
                 var radtheta = Math.PI * theta/180;
-                var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
                 if (dist > 1) {
                     dist = 1;
                 }
@@ -55,6 +58,7 @@ var Testing = function(processingInstance) {
                 dist = dist * 180/Math.PI;
                 dist = dist * 60 * 1.1515 * 5280;
                 return dist;
+                console.log("dist=",dist);
             }
         }
 
@@ -65,14 +69,17 @@ var Testing = function(processingInstance) {
                getLocation()
                Lat1=Lat
                Long1=Long
-               Dist1_2=distance();
+
+               Lat1=30.537;
+               Long1=-81.441;
+               distance();
             }            
             getLocation();
             if(mouseX>=450 && mouseX<=750 && mouseY>=200 && mouseY<=300) {
                getLocation()
                Lat2=Lat
                Long2=Long
-               Dist1_2=distance();
+               distance();
             }            
         }
 
@@ -92,14 +99,14 @@ var Testing = function(processingInstance) {
             fill(FirstColor);
 
 
-            text("Get 1st Point",200,280);
-            text("Get 2nd Point",600,280);
+            text("Get 1st Point",200,270);
+            text("Get 2nd Point",600,270);
             text("Lat  ="+Lat1.toFixed(3),200,350);
             text("Long ="+Long1.toFixed(3),200,400);
             text("Lat  ="+Lat2.toFixed(3),600,350);
             text("Long ="+Long2.toFixed(3),600,400);
-            text(Dist1_2+" Feet",400,450)
-            console.log(Dist1_2,Lat.toFixed(3),Lat1.toFixed(3),Lat2.toFixed(3),Long.toFixed(3),Long1.toFixed(3),Long2.toFixed(3));
+            text(dist.toFixed(0)+" Feet",400,450)
+            console.log(dist.toFixed(0),Lat.toFixed(3),Lat1.toFixed(3),Lat2.toFixed(3),Long.toFixed(3),Long1.toFixed(3),Long2.toFixed(3));
 
         }
 
