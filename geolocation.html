@@ -27,7 +27,7 @@ var Testing = function(processingInstance) {
         var getLocation = function() {
             if (navigator.geolocation) {
                 console.log('geolocation supported');
-                navigator.geolocation.getCurrentPosition(savePosition);
+                navigator.geolocation.getCurrentPosition(savePosition,displayError,{enableHighAccuracy: true});
             } else { 
                 console.log("Geolocation is not supported by this browser.");
             }
@@ -36,6 +36,9 @@ var Testing = function(processingInstance) {
             console.log("Made it to savePosition");
             Lat = position.coords.latitude;
             Long = position.coords.longitude;           
+        }
+        function displayError(){
+            
         }
 
 
