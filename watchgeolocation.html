@@ -27,26 +27,27 @@ var Testing = function(processingInstance) {
         var getLocation = function() {
             if (navigator.geolocation) {
                 console.log('geolocation supported');
-                navigator.geolocation.getCurrentPosition(savePosition,displayError,{enableHighAccuracy: true});
+                navigator.geolocation.getCurrentPosition(savePosition1,displayError,{enableHighAccuracy: true});
             } else { 
                 console.log("Geolocation is not supported by this browser.");
             }
         }
         var trackLocation = function() {
+            console.log("at trackLocation")
             if (navigator.geolocation) {
                 console.log('geolocation supported');
-                navigator.geolocation.watchPosition(savePosition2,displayError,{enableHighAccuracy: true});
+                navigator.geolocation.getCurrentPosition(savePosition2,displayError,{enableHighAccuracy: true});
             } else { 
                 console.log("Geolocation is not supported by this browser.");
             }
         }
-        function savePosition(position) {
-            console.log("Made it to savePosition");
-            Lat = position.coords.latitude;
-            Long = position.coords.longitude;           
+        function savePosition1(position) {
+            console.log("Made it to savePosition1");
+            Lat1 = position.coords.latitude;
+            Long1 = position.coords.longitude;           
         }
         function savePosition2(position) {
-            console.log("Made it to savePosition");
+            console.log("Made it to savePosition2");
             Lat2 = position.coords.latitude;
             Long2 = position.coords.longitude;           
         }
@@ -88,7 +89,7 @@ var Testing = function(processingInstance) {
 //               Test Location for PC
 //               Lat1=30.537;
 //               Long1=-81.441;
-                trackLocation()
+                setInterval(trackLocation,15000);
                startTrack=1;
             }            
         }
@@ -118,7 +119,7 @@ var Testing = function(processingInstance) {
             text("Lat  ="+Lat2.toFixed(3),600,350);
             text("Long ="+Long2.toFixed(3),600,400);
             text(dist.toFixed(0)+" Feet",400,450)
-            console.log(dist.toFixed(0),Lat.toFixed(3),Lat1.toFixed(3),Lat2.toFixed(3),Long.toFixed(3),Long1.toFixed(3),Long2.toFixed(3));
+            console.log(dist.toFixed(0),Lat.toFixed(3),Long.toFixed(3),Lat1.toFixed(3),Long1.toFixed(3),Lat2.toFixed(3),Long2.toFixed(3));
 
         }
 
