@@ -26,16 +26,14 @@ var Testing = function(processingInstance) {
 
         var getLocation = function() {
             if (navigator.geolocation) {
-                console.log('geolocation supported');
                 navigator.geolocation.getCurrentPosition(savePosition1,displayError,{enableHighAccuracy: true});
             } else { 
                 console.log("Geolocation is not supported by this browser.");
             }
         }
         var trackLocation = function() {
-            console.log("at trackLocation")
             if (navigator.geolocation) {
-                console.log('geolocation supported');
+                startTrack++;
                 navigator.geolocation.getCurrentPosition(savePosition2,displayError,{enableHighAccuracy: true});
             } else { 
                 console.log("Geolocation is not supported by this browser.");
@@ -90,7 +88,7 @@ var Testing = function(processingInstance) {
 //               Lat1=30.537;
 //               Long1=-81.441;
                 setInterval(trackLocation,15000);
-               startTrack=1;
+               startTrack=0;
             }            
         }
 
@@ -110,7 +108,7 @@ var Testing = function(processingInstance) {
             textAlign(CENTER);
             fill(FirstColor);
 
-
+            text("Interval: "+startTrack,600,100);
             text("Set Point",200,270);
             text("Current",600,270);
 
