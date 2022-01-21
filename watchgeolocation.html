@@ -35,6 +35,8 @@ var Testing = function(processingInstance) {
             if (navigator.geolocation) {
                 startTrack++;
                 navigator.geolocation.getCurrentPosition(savePosition2,displayError,{enableHighAccuracy: true});
+                console.log("Lat2, Long2:",Lat2.toFixed(3),Long2.toFixed(3));
+                distance();
             } else { 
                 console.log("Geolocation is not supported by this browser.");
             }
@@ -58,7 +60,8 @@ var Testing = function(processingInstance) {
         function distance() {
             console.log("Made it to distance",Lat1,Long1,Lat2,Long2);
             if ((Lat1 == Lat2) && (Long1 == Long2)) {
-                return 0;
+                dist=0
+                return dist;
             }
             else {
                 var radlat1 = Math.PI * Lat1/180;
@@ -73,7 +76,7 @@ var Testing = function(processingInstance) {
                 dist = dist * 180/Math.PI;
                 dist = dist * 60 * 1.1515 * 5280;
                 return dist;
-                console.log("dist=",dist);
+                console.log("Lat1,Long1,Lat2,Long2,dist=",Lat1.toFixed(3),Long1.toFixed(3),Lat2.toFixed(3),Long2.toFixed(3),dist);
             }
         }
 
@@ -82,12 +85,12 @@ var Testing = function(processingInstance) {
 
             if(mouseX>=50 && mouseX<=350 && mouseY>=200 && mouseY<=300) {
                getLocation()
-               Lat1=Lat
-               Long1=Long
+//               Lat1=Lat
+//              Long1=Long
 //               Test Location for PC
 //               Lat1=30.537;
 //               Long1=-81.441;
-                setInterval(trackLocation,15000);
+                setInterval(trackLocation,5000);
                startTrack=0;
             }            
         }
