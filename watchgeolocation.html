@@ -74,7 +74,7 @@ var Testing = function(processingInstance) {
                 }
                 dist = Math.acos(dist);
                 dist = dist * 180/Math.PI;
-                dist = dist * 60 * 1.1515 * 5280;
+                dist = dist * 60 * 1.1515 * 5280 / 3;
                 return dist;
                 console.log("Lat1,Long1,Lat2,Long2,dist=",Lat1.toFixed(3),Long1.toFixed(3),Lat2.toFixed(3),Long2.toFixed(3),dist);
             }
