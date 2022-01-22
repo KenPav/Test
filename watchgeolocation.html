@@ -90,7 +90,7 @@ var Testing = function(processingInstance) {
 //               Test Location for PC
 //               Lat1=30.537;
 //               Long1=-81.441;
-                setInterval(trackLocation,5000);
+                setInterval(trackLocation,30000);
                startTrack=0;
             }            
         }
@@ -119,7 +119,8 @@ var Testing = function(processingInstance) {
             text("Long ="+Long1.toFixed(3),200,400);
             text("Lat  ="+Lat2.toFixed(3),600,350);
             text("Long ="+Long2.toFixed(3),600,400);
-            text(dist.toFixed(0)+" Yards",400,450)
+            text(dist.toFixed(0)+" Yards",400,450);
+            text((dist*3).toFixed(0)+" Feet",400,500);
             console.log(dist.toFixed(0),Lat.toFixed(3),Long.toFixed(3),Lat1.toFixed(3),Long1.toFixed(3),Lat2.toFixed(3),Long2.toFixed(3));
 
         }
