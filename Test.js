@@ -96,8 +96,11 @@ var Testing = function(processingInstance) {
         background(BackColor);
 
             fill(FirstColor);
-            text(width+", "+height,150,100);
-            text(screen.width+", "+screen.height,300,100);
+            textSize(30);
+            text(width+", "+height,150,25);
+            text("Screen: "+screen.width+", "+screen.height,300,75);
+            text("Inner: "+window.innerWidth+", "+window.innerHeight,125,0);
+            text("Client: "+screen.width+", "+screen.height,300,175);
 
             fill(BoxColor);
             
