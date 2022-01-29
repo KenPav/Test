@@ -98,9 +98,10 @@ var Testing = function(processingInstance) {
             fill(FirstColor);
             textSize(30);
             text(width+", "+height,150,25);
-            text("Screen: "+screen.width+", "+screen.height,300,75);
-            text("Inner: "+window.innerWidth+", "+window.innerHeight,125,0);
-            text("Client: "+screen.width+", "+screen.height,300,175);
+            text("Window: "+window.innerWidth+", "+window.innerHeight,300,65);
+            text("Self: "+self.innerWidth+", "+self.innerHeight,300,105);
+            text("Parent: "+parent.innerWidth+", "+parent.innerHeight,300,145);
+            text("Top: "+top.innerWidth+", "+top.innerHeight,300,185);
 
             fill(BoxColor);
             
