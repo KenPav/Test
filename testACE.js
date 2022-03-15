@@ -9,7 +9,7 @@
    
      // ProgramCodeGoesHere
 
-      var vers = "03.15.22/12:00";
+      var vers = "03.15.22/15:00";
       var blinker = 0;
       var temp = 0;
       var temp2 = 0;
@@ -472,7 +472,7 @@
                else {
                   fill(FirstColor);
                }
-               textSize(40*xAdj);
+               textSize(35*xAdj);
                text(PlayerName[i],100*xAdj,355*yAdj+i*70*yAdj);
                textSize(50*xAdj);
                text(PlayerCourseHandicap[i],300*xAdj,355*yAdj+i*70*yAdj);
@@ -508,7 +508,7 @@
       AddPlayer = function() {
          background(BackColor)
          fill(BoxColor);
-         rect(325*xAdj,100*yAdj,150*xAdj,50*yAdj);
+         rect(300*xAdj,100*yAdj,200*xAdj,50*yAdj);
          rect(350*xAdj,200*yAdj,100*xAdj,50*yAdj);
          rect(50*xAdj,400*yAdj,200*xAdj,50*yAdj);
          rect(300*xAdj,400*yAdj,200*xAdj,50*yAdj);
@@ -534,7 +534,7 @@
          fill(FirstColor);
          textSize(30*xAdj);
          text("Name: ",200*xAdj,140*yAdj);
-         text("(<= 10 Characters)",625*xAdj,140*yAdj);
+         text("(<= 10 Characters)",635*xAdj,140*yAdj);
          text(AName,400*xAdj,140*yAdj);
          text("Handicap Index: ",200*xAdj,240*yAdj);
          text(AIndex.toFixed(1),400*xAdj,240*yAdj);
