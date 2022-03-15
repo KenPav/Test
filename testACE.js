@@ -45,6 +45,8 @@
       var holeLong = 0;
       var dist = 0;
       var closestHole = 0;
+      var myLat = 0;
+      var myLong = 0;
 
       var isVert=1;
       var myWidth=window.innerWidth;
@@ -389,7 +391,6 @@
                      NameCount = NameCount + 1;
                      NameAndIndex = 0;
                      console.log("PlayerCount,NameCount,NumberOfPlayers: ",PlayerCount,NameCount,NumberOfPlayers);
-
                      temp=floor((36-PlayerCourseHandicap[PlayerCount])/2);
                      temp2=36-(temp*2);
                      if (temp2===PlayerCourseHandicap[PlayerCount]) {
