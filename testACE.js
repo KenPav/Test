@@ -1411,7 +1411,7 @@
                for (i=0; i<15; i++) {
                   if(NumberOfNames>=j*15+i) {
                      if(mouseX>=(50+j*250)*xAdj && mouseX<=(250+j*250)*xAdj && mouseY>=(50+i*50)*yAdj && mouseY<=(100+i*50)*yAdj) {
-                        SelectedName = i+j*3;
+                        SelectedName = i+j*15;
                         console.log("SelectedName", SelectedName);
                         console.log("NumberOfNames", NumberOfNames);
                         if(NumberOfNames===SelectedName) {
