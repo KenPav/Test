@@ -493,10 +493,10 @@
             for (i=0; i<15; i++) {
                if(NumberOfNames>=j*15+i) {
                   fill(BoxColor);
-                  rect((50+j*250)*xAdj,(50+i*50)*yAdj,200*xAdj,50*yAdj);
+                  rect((15+j*260)*xAdj,(50+i*50)*yAdj,250*xAdj,50*yAdj);
                   fill(FirstColor);
-                  textSize(30*xAdj);
-                  text(AceName[i+j*15],(150+250*j)*xAdj,(90+i*50)*yAdj);
+                  textSize(35*xAdj);
+                  text(AceName[i+j*15],(140+260*j)*xAdj,(90+i*50)*yAdj);
                }
             }
          }
@@ -1410,7 +1410,7 @@
             for (j=0; j<3; j++) {
                for (i=0; i<15; i++) {
                   if(NumberOfNames>=j*15+i) {
-                     if(mouseX>=(50+j*250)*xAdj && mouseX<=(250+j*250)*xAdj && mouseY>=(50+i*50)*yAdj && mouseY<=(100+i*50)*yAdj) {
+                     if(mouseX>=(15+j*260)*xAdj && mouseX<=(265+j*260)*xAdj && mouseY>=(50+i*50)*yAdj && mouseY<=(100+i*50)*yAdj) {
                         SelectedName = i+j*15;
                         console.log("SelectedName", SelectedName);
                         console.log("NumberOfNames", NumberOfNames);
