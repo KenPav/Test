@@ -9,7 +9,7 @@
    
      // ProgramCodeGoesHere
 
-      var vers = "03.15.22/15:00";
+      var vers = "03.18.22/15:00";
       var blinker = 0;
       var temp = 0;
       var temp2 = 0;
@@ -94,6 +94,7 @@
       var AName = "";
       var AIndex = 0;
       var ATee = 0;
+      var PointsNeeded = 0;
       const AceName = ["Add Name","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""];
       const SortNameArray = ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""];
       const SortNameArray1 = ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""];
@@ -111,6 +112,8 @@
      // Up To Four Players With Their Total Course Handicap
      // 
       const PlayerName = ["","","","","Team"];
+      const firstPN = ["","","","",""];
+      const lastPN = ["","","","",""];
       const PlayerCourseHandicap = [0,0,0,0];
       const ReqPts = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
      // 
@@ -383,14 +386,9 @@
                   if(NameAndIndex === 3) {
                      PlayerName[PlayerCount] = AceName[SelectedName];
                      temp = AceTee[SelectedName] + (3*(Front + Back-1));
-                     console.log("Name, Tee, temp: ",PlayerName[PlayerCount],AceTee[SelectedName],temp)
                      PlayerCourseHandicap[PlayerCount] = Math.round(AceIndex[SelectedName] * (Slope[temp]/113) + (CourseRating[temp]-Par[temp]));
-                     console.log("PlayerCourseHandicap:",PlayerCourseHandicap[PlayerCount])
-                     console.log("HI, Tee, Slope, Rating, Par: ",AceIndex[SelectedName],AceTee[SelectedName],Slope[temp],CourseRating[temp],Par[temp]);
-                     console.log("Name, Course Handicap: ",PlayerName[PlayerCount],PlayerCourseHandicap[PlayerCount]);
                      NameCount = NameCount + 1;
                      NameAndIndex = 0;
-                     console.log("PlayerCount,NameCount,NumberOfPlayers: ",PlayerCount,NameCount,NumberOfPlayers);
                      temp=floor((36-PlayerCourseHandicap[PlayerCount])/2);
                      temp2=36-(temp*2);
                      if (temp2===PlayerCourseHandicap[PlayerCount]) {
@@ -415,31 +413,11 @@
                      PlayerCount=PlayerCount+1;
                      HCPCount=HCPCount+1
                      storeIt();
-
-                  }
-
-//                  PlayerName[PlayerCount]=prompt("Player #"+(PlayerCount+1).toString()+" Name: "+PlayerName[PlayerCount],PlayerName[PlayerCount].toString());
-//                  NameCount=NameCount+1;
-
-               }
-/*               if(HCPCount===PlayerCount) {
-
-                  text("Player #"+PlayerCount+1,", "+PlayerName[PlayerCount]+", Course Handicap",400*xAdj,100);
-                  for (i=0; i<10; i++) {
-                     for (j=0; j<4; j++) {
-                        fill(BoxColor);
-                        if(PlayerCourseHandicap[HCPCount]===(i+j*10)) {
-                           fill(SelectBoxColor);
-                        }
-                        rect(0+i*80*xAdj,200*yAdj+j*80*yAdj,80*xAdj,80*yAdj);
-                        fill(FirstColor);
-                        text(0+i+j*10,40*xAdj+i*80*xAdj,265*yAdj+j*80*yAdj);
-                     }
                   }
                }
-*/
             }
             else {
+               splitPlayerNames();
                CourseSet=3;
             }
             return;
@@ -473,8 +451,13 @@
                else {
                   fill(FirstColor);
                }
-               textSize(35*xAdj);
-               text(PlayerName[i],100*xAdj,355*yAdj+i*70*yAdj);
+               textSize(40*xAdj);
+               if(firstPN[i] === "") {
+                  text(PlayerName[i],100*xAdj,350*yAdj+i*70*yAdj);
+               } else {
+                  text(firstPN[i],100*xAdj,330*yAdj+i*70*yAdj);
+                  text(lastPN[i],100*xAdj,365*yAdj+i*70*yAdj);
+               }
                textSize(50*xAdj);
                text(PlayerCourseHandicap[i],300*xAdj,355*yAdj+i*70*yAdj);
                text(ReqPts[i*3],500*xAdj,355*yAdj+i*70*yAdj);
@@ -492,11 +475,24 @@
          for (j=0; j<3; j++) {
             for (i=0; i<15; i++) {
                if(NumberOfNames>=j*15+i) {
+                  console.log(AceName[i+j*15]);
                   fill(BoxColor);
                   rect((15+j*260)*xAdj,(50+i*50)*yAdj,250*xAdj,50*yAdj);
                   fill(FirstColor);
-                  textSize(35*xAdj);
-                  text(AceName[i+j*15],(140+260*j)*xAdj,(90+i*50)*yAdj);
+                  if(AceName[i+j*15].length > 14) {
+                     temp = AceName[i+j*15].indexOf(" ");
+                     if(temp === -1) {
+                        text(AceName[i+j*15],(140+260*j)*xAdj,(90+i*50)*yAdj);
+                     } else {
+                        textSize(30*xAdj);
+                        temp2 = AceName[i+j*15].length;
+                        text(AceName[i+j*15].slice(0,temp),(140+260*j)*xAdj,(73+i*50)*yAdj);
+                        text(AceName[i+j*15].slice(temp+1,temp2),(140+260*j)*xAdj,(98+i*50)*yAdj);
+                     }
+                  } else {
+                     textSize(35*xAdj);
+                     text(AceName[i+j*15],(140+260*j)*xAdj,(90+i*50)*yAdj);
+                  }
                }
             }
          }
@@ -509,11 +505,13 @@
       AddPlayer = function() {
          background(BackColor)
          fill(BoxColor);
-         rect(300*xAdj,100*yAdj,200*xAdj,50*yAdj);
+         textSize(40*xAdj);
+         rect(225*xAdj,100*yAdj,350*xAdj,50*yAdj);
          rect(350*xAdj,200*yAdj,100*xAdj,50*yAdj);
-         rect(50*xAdj,400*yAdj,200*xAdj,50*yAdj);
-         rect(300*xAdj,400*yAdj,200*xAdj,50*yAdj);
-         rect(550*xAdj,400*yAdj,200*xAdj,50*yAdj);
+         rect(25*xAdj,400*yAdj,250*xAdj,50*yAdj);
+         rect(275*xAdj,400*yAdj,250*xAdj,50*yAdj);
+         rect(525*xAdj,400*yAdj,250*xAdj,50*yAdj);
+         rect(350*xAdj,500*yAdj,100*xAdj,50*yAdj);
          if(ATee===0) {
             fill(SelectBoxColor);
          } else {
@@ -533,9 +531,10 @@
          }
          rect(500*xAdj,300*yAdj,100*xAdj,50*yAdj);
          fill(FirstColor);
-         textSize(30*xAdj);
-         text("Name: ",200*xAdj,140*yAdj);
-         text("(<= 10 Characters)",635*xAdj,140*yAdj);
+         text("Name: ",125*xAdj,140*yAdj);
+//         textSize(35*xAdj);
+//         text("(<= 13 Chars)",670*xAdj,140*yAdj);
+         textSize(40*xAdj);
          text(AName,400*xAdj,140*yAdj);
          text("Handicap Index: ",200*xAdj,240*yAdj);
          text(AIndex.toFixed(1),400*xAdj,240*yAdj);
@@ -545,6 +544,15 @@
          text("Delete Name",150*xAdj,440*yAdj);
          text("Save Player",400*xAdj,440*yAdj);
          text("Use Player #"+(PlayerCount+1),650*xAdj,440*yAdj);
+         text("Points Needed: ",200*xAdj,540*yAdj);
+         console.log("AIndex & PointsNeeded before Calc",AIndex,PointsNeeded);
+         if(AIndex>0) {
+            PointsNeeded = Math.round(36 - (AIndex*Slope[ATee + (3*(Front + Back-1))]/113+(CourseRating[ATee + (3*(Front + Back-1))]-Par[ATee + (3*(Front + Back-1))])));
+         } else {
+            PointsNeeded = 0;
+         }
+         console.log("AIndex & PointsNeeded after Calc",AIndex,PointsNeeded);
+         text(PointsNeeded.toFixed(0),400*xAdj,540*yAdj);
       }
 
       SortPlayers = function() {
@@ -674,7 +682,14 @@
                fill(FirstColor);
             }
             textSize(40*xAdj);
-            text(PlayerName[i],110*xAdj,255*yAdj+i*80*yAdj);
+//            text(PlayerName[i],110*xAdj,255*yAdj+i*80*yAdj);
+
+            if(firstPN[i] === "") {
+               text(PlayerName[i],110*xAdj,260*yAdj+i*80*yAdj);
+            } else {
+               text(firstPN[i],110*xAdj,235*yAdj+i*80*yAdj);
+               text(lastPN[i],110*xAdj,275*yAdj+i*80*yAdj);
+            }
             textSize(50*xAdj);
             for (var j = 0; j < 8; j++) {
                if(PlayerHoleStrokes[i*18+HoleNum-1]===j+1) {
@@ -761,17 +776,9 @@
             xAdj=myWidth/xOrig;
             yAdj=1;
          }
-//         console.log("Card",xMin,yMin,innerWidth,innerHeight,xAdj.toFixed(2),yAdj.toFixed(2));
-/*            else {
-            if(isVert===1 & myWidth<yOrig) {
-               yAdj=myWidth/yOrig;
-            }
-         }
-*/
+
          size(xOrig*xAdj,yOrig*yAdj);
 
-
-//            size(1250,1200);
          ScreenSelect();
          DoCalculations();
          textSize(35*xAdj);
@@ -840,7 +847,12 @@
                }
                textSize(30*xAdj);
                if(j>0 && j<=NumberOfPlayers && i===0) {
-                  text(PlayerName[j-1],85*xAdj,135*yAdj+50*j*yAdj);
+                  if(firstPN[j-1] === "") {
+                     text(PlayerName[j-1],85*xAdj,135*yAdj+j*50*yAdj);
+                  } else {
+                     text(firstPN[j-1],85*xAdj,123*yAdj+j*50*yAdj);
+                     text(lastPN[j-1],85*xAdj,148*yAdj+j*50*yAdj);
+                  }
                }
                textSize(35*xAdj);
                if(i<9 && j>0) {
@@ -903,7 +915,12 @@
                }                  
                textSize(30*xAdj);
                if(j>0 && j<=NumberOfPlayers && i===0) {
-                  text(PlayerName[j-1],85*xAdj,435*yAdj+50*j*yAdj);
+                  if(firstPN[j-1] === "") {
+                     text(PlayerName[j-1],85*xAdj,435*yAdj+j*50*yAdj);
+                  } else {
+                     text(firstPN[j-1],85*xAdj,423*yAdj+j*50*yAdj);
+                     text(lastPN[j-1],85*xAdj,448*yAdj+j*50*yAdj);
+                  }
                }
                textSize(35*xAdj);
                if(i<9 && j>0 && j<=NumberOfPlayers) {    
@@ -1000,7 +1017,15 @@
             }
             textSize(30*xAdj);
             if (j<NumberOfPlayers || j===4) {
-               text(PlayerName[j],85*xAdj,285*yAdj+j*50*yAdj); 
+//               text(PlayerName[j],85*xAdj,285*yAdj+j*50*yAdj); 
+
+               if(firstPN[j] === "") {
+                  text(PlayerName[j],85*xAdj,285*yAdj+j*50*yAdj);
+               } else {
+                  text(firstPN[j],85*xAdj,275*yAdj+j*50*yAdj);
+                  text(lastPN[j],85*xAdj,298*yAdj+j*50*yAdj);
+               }
+
             }
             textSize(35*xAdj);
             for (var i=0; i<3; i++) {
@@ -1184,6 +1209,21 @@
 
       }
 
+      splitPlayerNames = function() {
+         for(i=0; i<NumberOfPlayers; i++) {
+            temp = PlayerName[i].indexOf(" ");
+            if(temp === -1) {
+               firstPN[i] = "";
+               lastPN[i] = PlayerName[i];
+            } else {
+               firstPN[i]=PlayerName[i].slice(0,temp);
+               temp2 = PlayerName[i].length;
+               lastPN[i] = PlayerName[i].slice(temp+1,temp2);
+            }
+            console.log(PlayerName[i],firstPN[i],lastPN[i]);
+         }
+      }
+
 //       User Mouse Click Processing Section 
 
       mouseClicked = function() {
@@ -1240,7 +1280,7 @@
                }
                calcScores();                  
                AceScreen=1;
-//               trackLocation();
+               splitPlayerNames();
                draw()
 
             }
@@ -1248,7 +1288,6 @@
             if(mouseX>=425*xAdj && mouseX<=750*xAdj && mouseY>=200*yAdj && mouseY<=300*yAdj) {
                clearLocalData();
                AceScreen=1;
-//               trackLocation()
                draw()
             }
             return;
@@ -1336,12 +1375,16 @@
          if(AceScreen===1 && CourseSet===2) {
 
             if(NameAndIndex!=0) {
-               if(mouseX>=325*xAdj && mouseX<=475*xAdj && mouseY>=100*yAdj && mouseY<=150*yAdj) {
-                  AName=prompt("Player Name");
+               if(mouseX>=225*xAdj && mouseX<=575*xAdj && mouseY>=100*yAdj && mouseY<=150*yAdj) {
+                  if(AceName[SelectedName]==="Add Name") {
+                     AName=prompt("Player Name");
+                  } else {
+                     AName=prompt("Player Name",AceName[SelectedName]);
+                  }
                   console.log("AName: ",AName);
                }
                if(mouseX>=350*xAdj && mouseX<=450*xAdj && mouseY>=200*yAdj && mouseY<=250*yAdj) {
-                  AIndex=+(prompt("Handicap Index"));
+                  AIndex=+(prompt("Handicap Index",AceIndex[SelectedName]));
                }
                if(mouseX>=200*xAdj && mouseX<=300*xAdj && mouseY>=300*yAdj && mouseY<=350*yAdj) {
                   ATee = 0;
@@ -1352,8 +1395,16 @@
                if(mouseX>=500*xAdj && mouseX<=600*xAdj && mouseY>=300*yAdj && mouseY<=350*yAdj) {
                   ATee = 2;
                }
+               if(mouseX>=350*xAdj && mouseX<=450*xAdj && mouseY>=500*yAdj && mouseY<=550*yAdj) {
+                  console.log("PointsNeeded & AIndex before Calc",PointsNeeded,AIndex);
+                  PointsNeeded=+(prompt("Points Needed",PointsNeeded));
+                  AIndex = (((36 - PointsNeeded) + Par[ATee + (3*(Front + Back-1))] - CourseRating[ATee + (3*(Front + Back-1))]) * 113) / Slope[ATee + (3*(Front + Back-1))];
+                  AIndex = Math.round(AIndex * 10) / 10;
+                  AceIndex[SelectedName] = AIndex;
+                  console.log("PointsNeeded & AIndex after Calc",PointsNeeded,AIndex);
+               }
 //             DELETE NAME
-               if(mouseX>=50*xAdj && mouseX<=250*xAdj && mouseY>=400*yAdj && mouseY<=450*yAdj) {
+               if(mouseX>=25*xAdj && mouseX<=275*xAdj && mouseY>=400*yAdj && mouseY<=450*yAdj) {
                   NameAndIndex = 0;
                   for (i=SelectedName; i<NumberOfNames; i++) {
                      AceName[i] = AceName[i+1];
@@ -1365,7 +1416,7 @@
                   SaveNames();
                }
 //             SAVE PLAYER
-               if(mouseX>=300*xAdj && mouseX<=500*xAdj && mouseY>=400*yAdj && mouseY<=450*yAdj) {
+               if(mouseX>=275*xAdj && mouseX<=525*xAdj && mouseY>=400*yAdj && mouseY<=450*yAdj) {
                   AceName[SelectedName] = AName;
                   AceIndex[SelectedName] = AIndex;
                   AceTee[SelectedName] = ATee;
@@ -1385,7 +1436,7 @@
 
                }
 //             USE PLAYER
-               if(mouseX>=550*xAdj && mouseX<=750*xAdj && mouseY>=400*yAdj && mouseY<=450*yAdj) {
+               if(mouseX>=525*xAdj && mouseX<=775*xAdj && mouseY>=400*yAdj && mouseY<=450*yAdj) {
                   AceName[SelectedName] = AName;
                   AceIndex[SelectedName] = AIndex;
                   AceTee[SelectedName] = ATee;
@@ -1432,41 +1483,6 @@
                NameAndIndex = 0;
                CourseSet = 1;
             }
-
-/*            for (i=0; i<10; i++) {
-               for (j=0; j<4; j++) {
-                  if(mouseX>=0*xAdj+80*i*xAdj && mouseX<=80*xAdj+80*i*xAdj && mouseY>=200*yAdj+j*80*yAdj && mouseY<=280*yAdj+j*80*yAdj) {
-                     PlayerCourseHandicap[PlayerCount]=i+j*10;
-
-                     temp=floor((36-PlayerCourseHandicap[PlayerCount])/2);
-                     temp2=36-(temp*2);
-                     if (temp2===PlayerCourseHandicap[PlayerCount]) {
-                        ReqPts[PlayerCount*3]=temp;
-                        ReqPts[PlayerCount*3+1]=temp;
-                     }
-                     else {
-                        if (Front>Back) {
-                           ReqPts[PlayerCount*3]=temp;
-                           ReqPts[PlayerCount*3+1]=temp+1;
-                        }
-                        else {
-                           ReqPts[PlayerCount*3]=temp+1;
-                           ReqPts[PlayerCount*3+1]=temp;
-                        }
-                     }
-                        ReqPts[PlayerCount*3+2] = ReqPts[PlayerCount*3] + ReqPts[PlayerCount*3+1];
-                        ReqPts[12] = ReqPts[12] + ReqPts[PlayerCount*3];
-                        ReqPts[13] = ReqPts[13] + ReqPts[PlayerCount*3+1];
-                        ReqPts[14] = ReqPts[14] + ReqPts[PlayerCount*3+2];
-
-                     PlayerCount=PlayerCount+1;
-                     HCPCount=HCPCount+1
-                     storeIt();
-                     return;
-                  }
-               }
-            }
-*/
          }
 
          if(AceScreen===1 && CourseSet===3) {
